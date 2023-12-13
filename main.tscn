@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://Hack-Regular.tres" type="DynamicFont" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+const vec3 white = vec3(1.0);
+const vec3 red   = vec3(1.0, 0.0, 0.0);
+const vec3 green = vec3(0.0, 1.0, 0.0);
+const vec3 blue  = vec3(0.0, 0.0, 1.0);
+
+const int start = 0;
+const int end   = 255;
+
+void fragment() {
+	vec3  c = white;
+	float s = float(start) / 255.0;
+	float e = float(end) / 255.0;
+	float x = (UV.y < 0.5) ? UV.x : 1.0 - UV.x;
+	float v = (e - s) * x + s;
+	COLOR = vec4(v * c, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
+material = SubResource( 2 )
+margin_right = 600.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 600.0
+margin_right = 1200.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+custom_constants/separation = 0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "shader_type canvas_item;
+
+const vec3 white = vec3(1.0);
+const vec3 red   = vec3(1.0, 0.0, 0.0);
+const vec3 green = vec3(0.0, 1.0, 0.0);
+const vec3 blue  = vec3(0.0, 0.0, 1.0);
+
+const int start = 0;
+const int end   = 255;
+
+void fragment() {
+	vec3  c = white;
+	float s = float(start) / 255.0;
+	float e = float(end) / 255.0;
+	float x = (UV.y < 0.5) ? UV.x : 1.0 - UV.x;
+	float v = (e - s) * x + s;
+	COLOR = vec4(v * c, 1.0);
+}"
+highlight_current_line = true
+syntax_highlighting = true
+show_line_numbers = true
+highlight_all_occurrences = true
+context_menu_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 560.0
+margin_right = 600.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 100, 40 )
+focus_mode = 0
+size_flags_stretch_ratio = 0.1
+custom_fonts/font = ExtResource( 2 )
+text = "Compile"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]
